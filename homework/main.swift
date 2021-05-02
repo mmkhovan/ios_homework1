@@ -40,6 +40,7 @@ class Task2 {
       }
 }
 
+
 class Task3 {
     init() {
        var deposit = 10_000.0
