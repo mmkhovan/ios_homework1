@@ -1,62 +1,168 @@
 //
-//  homework2.swift
+//  homework4.swift
 //  cmd_tool
 //
-//  Created by Хованский Михаил on 22.04.2021.
+//  Created by Хованский Михаил on 25.04.2021.
 //
 
 import Foundation
 
 
-class Task1 {
-    init() {
-          let a = -1.0, b = -5.0, c = 6.0
+enum Engine {
+    case on, off
+}
 
-          var x1 = 0.0
-          var x2 = 0.0
-          let discriminant = pow(b, 2) - 4 * a * c
+enum Window: String {
+    case open = "открыто", close = "закрыто"
+}
 
-    
-          if discriminant > 0 {
-             x1 = (-b + sqrt(discriminant)) / 2 * a
-             x2 = (-b - sqrt(discriminant)) / 2 * a
-          } else if discriminant == 0 {
-             x1 = -b / (2 * a)
-             print("x1 = \(x1)\nx2 = \(x2)")
-      }
+enum roof {
+    case installed, removed
+}
+
+enum Trunk {
+    case up, down
+}
+
+enum Door {
+    case open, closed
+}
+
+class Car {
+    let mark: String
+    let year: Int
+    var km: Double
+    var weight: Double
+    var engineState1: Engine
+    var windowState1: Window
+    var doorState1: Door
+
+    init(mark: String, year: Int, km: Double, weight: Double,
+         engineState: Engine, windowState: Window, doorState: Door) {
+        self.mark = mark
+        self.year = year
+        self.km = km
+        self.weight = weight
+        self.engineState1 = engineState
+        self.windowState1 = windowState
+        self.doorState1 = doorState
     }
+
+    func changeWindowState(to: Window) {}
+    func changeEngineState(to: Engine) {}
+    func changeDoorState(to: Door) {}
 }
 
-class Task2 {
-    init() {
-       let sideA = 3.0, sideB = 4.0
-       let sideC = sqrt(pow(sideA, 2) + sideB * sideB)
-       let perimeter = sideA + sideB + sideC
-       let square = (sideA + sideB) / 2
+class SportCar1: Car {
+    var Roof: roof
+    init(mark: String, year: Int, km: Double, weight: Double,
+         engineState: Engine, windowState: Window, doorState: Door,
+         roof: roof) {
+        self.Roof = roof
+        super.init(mark: mark, year: year, km: km, weight: weight,
+                engineState: engineState, windowState: windowState, doorState: doorState)
 
-       print(sideC)
-       print(perimeter)
-       print(square)
-      }
+        func changeRoofState(to: roof) {
+            Roof = to
+        }
+
+        func alarm_OFF() {
+            engineState1 = .on
+            windowState1 = .open
+            doorState1 = .open
+        }
+
+        func alarm_ON() {
+            engineState1 = .off
+            windowState1 = .close
+            doorState1 = .closed
+
+        }
+
+
+
+    }
+    // переопределение методов
+    override func changeWindowState(to: Window) {
+        windowState1 = to
+    }
+    override func changeEngineState(to: Engine) {
+        engineState1 = to
+    }
+    override func changeDoorState(to: Door) {
+        doorState1 = to
+    }
+
+
 }
 
-class Task3 {
-    init() {
-       var deposit = 10_000.0
-       let percent = 10.0
-       let years = 5
 
-       let rate = percent / 100
+class TrunkCar1: Car {
+    var Trunk1: Trunk
+    init(mark: String, year: Int, km: Double, weight: Double,
+         engineState: Engine, windowState: Window, doorState: Door,
+         trunk: Trunk) {
+        self.Trunk1 = trunk
+        super.init(mark: mark, year: year, km: km, weight: weight,
+                engineState: engineState, windowState: windowState, doorState: doorState)
 
+        func changeTrunkState(to: Trunk) {
+            Trunk1 = to
+        }
 
-       for _ in 1...years {
-         deposit = deposit * (1 + rate)
-       }
+        func alarm_OFF() {
+            engineState1 = .on
+            windowState1 = .open
+            doorState1 = .open
+            Trunk1 = .up
+        }
 
-       deposit = deposit * pow(1 + rate, Double(years))
-        
-       "Deposit = \(round(deposit * 100) / 100) rub"
-        
-       String(format: "%.2f", deposit)
-  }
+        func alarm_ON() {
+            engineState1 = .off
+            windowState1 = .close
+            doorState1 = .closed
+            Trunk1 = .down
+
+        }
+    }
+    // переопределение методов
+    override func changeWindowState(to: Window) {
+        windowState1 = to
+    }
+    override func changeEngineState(to: Engine) {
+        engineState1 = to
+    }
+
 }
+
+
+var sportcar1 = SportCar1(mark: "Volvo", year: 2016, km: 0, weight: 1000, engineState: .off, windowState: .close, doorState: .closed, roof: .installed)
+var sportcar2 = SportCar1(mark: "Volvo", year: 2016, km: 0, weight: 1000, engineState: .off, windowState: .close, doorState: .closed, roof: .installed)
+
+var trunkcar1 = TrunkCar1(mark: "ZIL", year: 1965, km: 800000, weight: 8000, engineState: .off, windowState: .close, doorState: .closed, trunk: .down)
+var trunkcar2 = TrunkCar1(mark: "MAN", year: 1999, km: 8000, weight: 8000, engineState: .off, windowState: .close, doorState: .closed, trunk: .up)
+
+
+sportcar1.windowState1.rawValue
+sportcar1.engineState1
+sportcar1.doorState1
+
+sportcar1.alarm_OFF()
+
+sportcar2.Roof
+sportcar2.changeDoorState(to: .removed)
+
+
+trunkcar1.doorState1
+trunkcar1.Trunk
+trunkcar1.changeDoorState(to: .open)
+trunkcar1.changeTrunkState(to: .open)
+trunkcar1.doorState1
+trunkcar1.Trunk1
+
+trunkcar2.Trunk1
+trunkcar2.km
+trunkcar2.changeDoorState(to: .closed)
+trunkcar2.km  = 100
+trunkcar2.Trunk1
+trunkcar2.km
