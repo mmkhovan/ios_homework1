@@ -2,107 +2,167 @@
 //  homework4.swift
 //  cmd_tool
 //
-//  Created by Хованский Михаил on 22.04.2021.
+//  Created by Хованский Михаил on 25.04.2021.
 //
 
 import Foundation
 
 
-enum Transmission {
-    case auto, manual
-}
-
-enum EngineState {
+enum Engine {
     case on, off
 }
 
-enum DoorState {
+enum Window: String {
+    case open = "открыто", close = "закрыто"
+}
+
+enum roof {
+    case installed, removed
+}
+
+enum Trunk {
+    case up, down
+}
+
+enum Door {
     case open, closed
 }
 
-enum TankLevel {
-    case full, empty
+class Car {
+    let mark: String
+    let year: Int
+    var km: Double
+    var weight: Double
+    var engineState1: Engine
+    var windowState1: Window
+    var doorState1: Door
+
+    init(mark: String, year: Int, km: Double, weight: Double,
+         engineState: Engine, windowState: Window, doorState: Door) {
+        self.mark = mark
+        self.year = year
+        self.km = km
+        self.weight = weight
+        self.engineState1 = engineState
+        self.windowState1 = windowState
+        self.doorState1 = doorState
+    }
+
+    func changeWindowState(to: Window) {}
+    func changeEngineState(to: Engine) {}
+    func changeDoorState(to: Door) {}
 }
 
-enum Trailer {
-    case big, small
-}
+class SportCar1: Car {
+    var Roof: roof
+    init(mark: String, year: Int, km: Double, weight: Double,
+         engineState: Engine, windowState: Window, doorState: Door,
+         roof: roof) {
+        self.Roof = roof
+        super.init(mark: mark, year: year, km: km, weight: weight,
+                engineState: engineState, windowState: windowState, doorState: doorState)
 
-struct TrunkCar {
-    var brand: String
-    var Trailer: Trailer
-    var TrunkCapacity: Int
-    var TrunkFilledCapacity: Int
-    var engineCapacity: Int
-    var spareWheel: Bool
-    var engineState: EngineState
-    var doorState: DoorState
-    var tankLevel: TankLevel
+        func changeRoofState(to: roof) {
+            Roof = to
+        }
 
-    mutating func openDoor() {
-        doorState = .open
+        func alarm_OFF() {
+            engineState1 = .on
+            windowState1 = .open
+            doorState1 = .open
+        }
+
+        func alarm_ON() {
+            engineState1 = .off
+            windowState1 = .close
+            doorState1 = .closed
+
+        }
+
+
+
+    }
+    // переопределение методов
+    override func changeWindowState(to: Window) {
+        windowState1 = to
+    }
+    override func changeEngineState(to: Engine) {
+        engineState1 = to
+    }
+    override func changeDoorState(to: Door) {
+        doorState1 = to
     }
 
-    mutating func closeDoor() {
-        doorState = .closed
-    }
-
-    mutating func tankLevel(_ tankLevel: TankLevel) {
-        self.tankLevel = tankLevel
-    }
-
-    mutating func engineState(_ engineState: EngineState) {
-        self.engineState = engineState
-    }
-}
-
-
-struct SportCar {
-    var brand: String
-    var yearOfIssue: Int
-    var maxSpeed: Int
-    var transmission: Transmission
-    var parkingSensor: Bool
-    var engineState: EngineState
-    var doorState: DoorState
-    var tankLevel: TankLevel
-
-    mutating func doorState(_ doorState: DoorState) {
-        self.doorState = doorState
-    }
-
-    mutating func fillTank() {
-        tankLevel = .full
-    }
-
-    mutating func emptyTank() {
-        tankLevel = .empty
-    }
-
-    mutating func engineOn() {
-        engineState = .on
-    }
-
-    mutating func engineoff() {
-        engineState = .off
-    }
 
 }
 
-var sportCar1 = SportCar(brand: "ferarri", yearOfIssue: 2001, maxSpeed: 370, transmission: .manual, parkingSensor: true, engineState: .on, doorState: .open, tankLevel: .full)
 
-var sportCar2 = SportCar(brand: "porsche", yearOfIssue: 2012, maxSpeed: 350, transmission: .manual, parkingSensor: true, engineState: .on, doorState: .open, tankLevel: .empty)
+class TrunkCar1: Car {
+    var Trunk1: Trunk
+    init(mark: String, year: Int, km: Double, weight: Double,
+         engineState: Engine, windowState: Window, doorState: Door,
+         trunk: Trunk) {
+        self.Trunk1 = trunk
+        super.init(mark: mark, year: year, km: km, weight: weight,
+                engineState: engineState, windowState: windowState, doorState: doorState)
 
-var trunkCar1 = TrunkCar(brand: "GAZ", Trailer: .big, TrunkCapacity: 500, TrunkFilledCapacity: 250, engineCapacity: 2, spareWheel: true, engineState: .on, doorState: .closed, tankLevel: .full)
+        func changeTrunkState(to: Trunk) {
+            Trunk1 = to
+        }
 
-var trunkCar2 = TrunkCar(brand: "Volvo", Trailer: .big, TrunkCapacity: 570, TrunkFilledCapacity: 300, engineCapacity: 2, spareWheel: true, engineState: .off, doorState: .closed, tankLevel: .empty)
+        func alarm_OFF() {
+            engineState1 = .on
+            windowState1 = .open
+            doorState1 = .open
+            Trunk1 = .up
+        }
 
+        func alarm_ON() {
+            engineState1 = .off
+            windowState1 = .close
+            doorState1 = .closed
+            Trunk1 = .down
 
+        }
+    }
+    // переопределение методов
+    override func changeWindowState(to: Window) {
+        windowState1 = to
+    }
+    override func changeEngineState(to: Engine) {
+        engineState1 = to
+    }
 
-func PrintSportCarProperties(car: SportCar) {
-    print(car.brand, car.yearOfIssue, car.maxSpeed, car.transmission, car.parkingSensor, car.engineState, car.doorState, car.tankLevel)
 }
 
-func PrinttrunkCarProperties(car: TrunkCar) {
-    print(car.brand, car.Trailer, car.TrunkCapacity, car.TrunkFilledCapacity, car.engineCapacity, car.spareWheel, car.engineState, car.doorState, car.tankLevel)
-}
+
+var sportcar1 = SportCar1(mark: "Volvo", year: 2016, km: 0, weight: 1000, engineState: .off, windowState: .close, doorState: .closed, roof: .installed)
+var sportcar2 = SportCar1(mark: "Volvo", year: 2016, km: 0, weight: 1000, engineState: .off, windowState: .close, doorState: .closed, roof: .installed)
+
+var trunkcar1 = TrunkCar1(mark: "ZIL", year: 1965, km: 800000, weight: 8000, engineState: .off, windowState: .close, doorState: .closed, trunk: .down)
+var trunkcar2 = TrunkCar1(mark: "MAN", year: 1999, km: 8000, weight: 8000, engineState: .off, windowState: .close, doorState: .closed, trunk: .up)
+
+
+sportcar1.windowState1.rawValue
+sportcar1.engineState1
+sportcar1.doorState1
+
+sportcar1.alarm_OFF()
+
+sportcar2.Roof
+sportcar2.changeDoorState(to: .removed)
+
+
+trunkcar1.doorState1
+trunkcar1.Trunk
+trunkcar1.changeDoorState(to: .open)
+trunkcar1.changeTrunkState(to: .open)
+trunkcar1.doorState1
+trunkcar1.Trunk1
+
+trunkcar2.Trunk1
+trunkcar2.km
+trunkcar2.changeDoorState(to: .closed)
+trunkcar2.km  = 100
+trunkcar2.Trunk1
+trunkcar2.km
