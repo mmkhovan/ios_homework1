@@ -8,8 +8,6 @@
 import Foundation
 
 
-class Task1 {
-    init() {
           let a = -1.0, b = -5.0, c = 6.0
 
           var x1 = 0.0
@@ -24,11 +22,9 @@ class Task1 {
              x1 = -b / (2 * a)
              print("x1 = \(x1)\nx2 = \(x2)")
       }
-    }
-}
 
-class Task2 {
-    init() {
+
+
        let sideA = 3.0, sideB = 4.0
        let sideC = sqrt(pow(sideA, 2) + sideB * sideB)
        let perimeter = sideA + sideB + sideC
@@ -37,12 +33,9 @@ class Task2 {
        print(sideC)
        print(perimeter)
        print(square)
-      }
-}
 
 
-class Task3 {
-    init() {
+
        var deposit = 10_000.0
        let percent = 10.0
        let years = 5
@@ -59,5 +52,4 @@ class Task3 {
        "Deposit = \(round(deposit * 100) / 100) rub"
         
        String(format: "%.2f", deposit)
-  }
-}
+
