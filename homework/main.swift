@@ -1,5 +1,5 @@
 //
-//  homework2.swift
+//  homework4.swift
 //  cmd_tool
 //
 //  Created by Хованский Михаил on 22.04.2021.
@@ -8,55 +8,101 @@
 import Foundation
 
 
-class Task1 {
-    init() {
-          let a = -1.0, b = -5.0, c = 6.0
+enum Transmission {
+    case auto, manual
+}
 
-          var x1 = 0.0
-          var x2 = 0.0
-          let discriminant = pow(b, 2) - 4 * a * c
+enum EngineState {
+    case on, off
+}
 
-    
-          if discriminant > 0 {
-             x1 = (-b + sqrt(discriminant)) / 2 * a
-             x2 = (-b - sqrt(discriminant)) / 2 * a
-          } else if discriminant == 0 {
-             x1 = -b / (2 * a)
-             print("x1 = \(x1)\nx2 = \(x2)")
-      }
+enum DoorState {
+    case open, closed
+}
+
+enum TankLevel {
+    case full, empty
+}
+
+enum Trailer {
+    case big, small
+}
+
+struct TrunkCar {
+    var brand: String
+    var Trailer: Trailer
+    var TrunkCapacity: Int
+    var TrunkFilledCapacity: Int
+    var engineCapacity: Int
+    var spareWheel: Bool
+    var engineState: EngineState
+    var doorState: DoorState
+    var tankLevel: TankLevel
+
+    mutating func openDoor() {
+        doorState = .open
+    }
+
+    mutating func closeDoor() {
+        doorState = .closed
+    }
+
+    mutating func tankLevel(_ tankLevel: TankLevel) {
+        self.tankLevel = tankLevel
+    }
+
+    mutating func engineState(_ engineState: EngineState) {
+        self.engineState = engineState
     }
 }
 
-class Task2 {
-    init() {
-       let sideA = 3.0, sideB = 4.0
-       let sideC = sqrt(pow(sideA, 2) + sideB * sideB)
-       let perimeter = sideA + sideB + sideC
-       let square = (sideA + sideB) / 2
 
-       print(sideC)
-       print(perimeter)
-       print(square)
-      }
+struct SportCar {
+    var brand: String
+    var yearOfIssue: Int
+    var maxSpeed: Int
+    var transmission: Transmission
+    var parkingSensor: Bool
+    var engineState: EngineState
+    var doorState: DoorState
+    var tankLevel: TankLevel
+
+    mutating func doorState(_ doorState: DoorState) {
+        self.doorState = doorState
+    }
+
+    mutating func fillTank() {
+        tankLevel = .full
+    }
+
+    mutating func emptyTank() {
+        tankLevel = .empty
+    }
+
+    mutating func engineOn() {
+        engineState = .on
+    }
+
+    mutating func engineoff() {
+        engineState = .off
+    }
+
 }
 
-class Task3 {
-    init() {
-       var deposit = 10_000.0
-       let percent = 10.0
-       let years = 5
+var sportCar1 = SportCar(brand: "ferarri", yearOfIssue: 2001, maxSpeed: 370, transmission: .manual, parkingSensor: true, engineState: .on, doorState: .open, tankLevel: .full)
 
-       let rate = percent / 100
+var sportCar2 = SportCar(brand: "porsche", yearOfIssue: 2012, maxSpeed: 350, transmission: .manual, parkingSensor: true, engineState: .on, doorState: .open, tankLevel: .empty)
+
+var trunkCar1 = TrunkCar(brand: "GAZ", Trailer: .big, TrunkCapacity: 500, TrunkFilledCapacity: 250, engineCapacity: 2, spareWheel: true, engineState: .on, doorState: .closed, tankLevel: .full)
+
+var trunkCar2 = TrunkCar(brand: "Volvo", Trailer: .big, TrunkCapacity: 570, TrunkFilledCapacity: 300, engineCapacity: 2, spareWheel: true, engineState: .off, doorState: .closed, tankLevel: .empty)
 
 
-       for _ in 1...years {
-         deposit = deposit * (1 + rate)
-       }
 
-       deposit = deposit * pow(1 + rate, Double(years))
-        
-       "Deposit = \(round(deposit * 100) / 100) rub"
-        
-       String(format: "%.2f", deposit)
-  }
+func PrintSportCarProperties(car: SportCar) {
+    print(car.brand, car.yearOfIssue, car.maxSpeed, car.transmission, car.parkingSensor, car.engineState, car.doorState, car.tankLevel)
+}
+
+func PrinttrunkCarProperties(car: TrunkCar) {
+    print(car.brand, car.Trailer, car.TrunkCapacity, car.TrunkFilledCapacity, car.engineCapacity, car.spareWheel, car.engineState, car.doorState, car.tankLevel)
 }
