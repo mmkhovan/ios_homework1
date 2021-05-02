@@ -1,62 +1,77 @@
 //
-//  homework2.swift
+//  homework6.swift
 //  cmd_tool
 //
-//  Created by Хованский Михаил on 22.04.2021.
+//  Created by Хованский Михаил on 25.04.2021.
 //
 
 import Foundation
 
+enum Wire: String {
+    case phase = "фаза"
+    case zero = "ноль"
+}
 
-class Task1 {
-    init() {
-          let a = -1.0, b = -5.0, c = 6.0
+class WireProperties {
+    let material: Wire
+    let section: String
+    let length: Int
+    let color: String
 
-          var x1 = 0.0
-          var x2 = 0.0
-          let discriminant = pow(b, 2) - 4 * a * c
-
-    
-          if discriminant > 0 {
-             x1 = (-b + sqrt(discriminant)) / 2 * a
-             x2 = (-b - sqrt(discriminant)) / 2 * a
-          } else if discriminant == 0 {
-             x1 = -b / (2 * a)
-             print("x1 = \(x1)\nx2 = \(x2)")
-      }
+    init(material: Wire, section: String, length: Int, color: String) {
+        self.material = material
+        self.section = section
+        self.length = length
+        self.color = color
     }
 }
 
-class Task2 {
-    init() {
-       let sideA = 3.0, sideB = 4.0
-       let sideC = sqrt(pow(sideA, 2) + sideB * sideB)
-       let perimeter = sideA + sideB + sideC
-       let square = (sideA + sideB) / 2
-
-       print(sideC)
-       print(perimeter)
-       print(square)
-      }
+extension WireProperties {
+    var txt: String {
+        """
+            \(material.rawValue) .  \(section) . \(length) . \(color)
+        """
+    }
 }
 
-class Task3 {
-    init() {
-       var deposit = 10_000.0
-       let percent = 10.0
-       let years = 5
+struct Queue<T> {
+    private var box: [T] = []
 
-       let rate = percent / 100
+    func filter(predicate: (T) -> Bool) -> [T] {
+        var tempArr: [T] = []
+        for i in box {
+            if predicate(i) {
+                tempArr.append(i)
+            }
+        }
+        return tempArr
+    }
 
+    mutating func pop() -> T? {
+        guard  box.count > 0
+                else {
+            return nil
+        }
+        return box.removeFirst()
+    }
 
-       for _ in 1...years {
-         deposit = deposit * (1 + rate)
-       }
-
-       deposit = deposit * pow(1 + rate, Double(years))
-        
-       "Deposit = \(round(deposit * 100) / 100) rub"
-        
-       String(format: "%.2f", deposit)
-  }
+    mutating func push(_ i:T) {
+        box.append(i)
+    }
 }
+
+extension Queue {
+    subscript(index: Int) -> T? {
+        guard index >= 0 && index < box.count else {
+            return nil
+        }
+        return box[index]
+    }
+}
+
+var BoxOfWires = Queue<WireProperties>()
+
+BoxOfWires.push(WireProperties(material: .phase, section: "0.5", length: 2, color: "blue"))
+BoxOfWires.push(WireProperties(material: .zero, section: "0.3", length: 4, color: "red"))
+BoxOfWires.push(WireProperties(material: .zero, section: "0.5", length: 4, color: "green"))
+BoxOfWires.push(WireProperties(material: .phase, section: "0.4", length: 5, color: "green-yellow"))
